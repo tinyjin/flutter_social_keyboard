@@ -22,7 +22,7 @@ class FlutterSocialKeyboard extends StatefulWidget {
   final KeyboardConfig keyboardConfig;
 
   /// Optional callback function for when emoji is pressed
-  final Function(Category, Emoji)? onEmojiSelected;
+  final Function(Category?, Emoji)? onEmojiSelected;
 
   /// optional callback function for when BackSpace button is pressed
   final Function()? onBackspacePressed;

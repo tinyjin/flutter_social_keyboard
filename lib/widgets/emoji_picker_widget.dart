@@ -4,7 +4,7 @@ import 'package:flutter_social_keyboard/models/keyboard_config.dart';
 
 class EmojiPickerWidget extends StatefulWidget {
   final KeyboardConfig keyboardConfig;
-  final Function(Category, Emoji)? onEmojiSelected;
+  final Function(Category?, Emoji)? onEmojiSelected;
   final Function()? onBackspacePressed;
   const EmojiPickerWidget({
     Key? key,
@@ -24,30 +24,34 @@ class _EmojiPickerWidgetState extends State<EmojiPickerWidget> {
       onEmojiSelected: widget.onEmojiSelected,
       onBackspacePressed: null,
       config: Config(
-        columns: widget.keyboardConfig.emojiColumns,
-        emojiSizeMax: widget.keyboardConfig.emojiSizeMax,
-        verticalSpacing: widget.keyboardConfig.emojiVerticalSpacing,
-        horizontalSpacing: widget.keyboardConfig.emojiHorizontalSpacing,
-        gridPadding: widget.keyboardConfig.gridPadding,
-        initCategory: widget.keyboardConfig.initCategory,
-        bgColor: widget.keyboardConfig.bgColor,
-        indicatorColor: widget.keyboardConfig.indicatorColor,
-        iconColor: widget.keyboardConfig.iconColor,
-        iconColorSelected: widget.keyboardConfig.iconColorSelected,
-        progressIndicatorColor: widget.keyboardConfig.progressIndicatorColor,
-        backspaceColor: widget.keyboardConfig.backspaceColor,
-        skinToneDialogBgColor: widget.keyboardConfig.skinToneDialogBgColor,
-        skinToneIndicatorColor: widget.keyboardConfig.skinToneIndicatorColor,
-        enableSkinTones: widget.keyboardConfig.enableSkinTones,
-        showRecentsTab: widget.keyboardConfig.showRecentsTab,
-        recentsLimit: widget.keyboardConfig.recentsLimit,
-        replaceEmojiOnLimitExceed:
-            widget.keyboardConfig.replaceRecentOnLimitExceed,
-        noRecents: widget.keyboardConfig.noRecents,
-        tabIndicatorAnimDuration:
-            widget.keyboardConfig.tabIndicatorAnimDuration,
-        categoryIcons: widget.keyboardConfig.categoryIcons,
-        buttonMode: widget.keyboardConfig.buttonMode,
+        // height: widget.keyboardConfig.hei,
+        skinToneConfig: const SkinToneConfig(),
+        checkPlatformCompatibility: true,
+        viewOrderConfig: const ViewOrderConfig(
+          top: EmojiPickerItem.categoryBar,
+          middle: EmojiPickerItem.emojiView,
+          bottom: EmojiPickerItem.searchBar,
+        ),
+        emojiViewConfig: EmojiViewConfig(
+          emojiSizeMax: widget.keyboardConfig.emojiSizeMax,
+          backgroundColor: widget.keyboardConfig.bgColor,
+        ),
+        categoryViewConfig: CategoryViewConfig(
+          indicatorColor: widget.keyboardConfig.indicatorColor,
+          dividerColor: Colors.transparent,
+          backgroundColor: widget.keyboardConfig.bgColor,
+          iconColorSelected: widget.keyboardConfig.iconColorSelected,
+          categoryIcons: widget.keyboardConfig.categoryIcons,
+        ),
+        bottomActionBarConfig: BottomActionBarConfig(
+          backgroundColor: widget.keyboardConfig.bgColor,
+          buttonColor: widget.keyboardConfig.bgColor,
+          buttonIconColor: widget.keyboardConfig.iconColor,
+        ),
+        searchViewConfig: SearchViewConfig(
+          backgroundColor: widget.keyboardConfig.bgColor,
+          buttonIconColor: widget.keyboardConfig.iconColor,
+        ),
       ),
     );
   }

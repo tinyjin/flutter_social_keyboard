@@ -6,9 +6,9 @@ import FlutterMacOS
 import Foundation
 
 import emoji_picker_flutter
-import path_provider_macos
-import shared_preferences_macos
-import sqflite
+import path_provider_foundation
+import shared_preferences_foundation
+import sqflite_darwin
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   EmojiPickerFlutterPlugin.register(with: registry.registrar(forPlugin: "EmojiPickerFlutterPlugin"))

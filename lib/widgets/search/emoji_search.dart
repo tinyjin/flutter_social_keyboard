@@ -53,7 +53,7 @@ class Calculates extends State<EmojiSearch> {
       return;
     }
     List<Emoji> emojiResult =
-        await EmojiPickerUtils().searchEmoji(_textController.text);
+        await EmojiPickerUtils().searchEmoji(_textController.text, []);
     emojis.clear();
     emojis.addAll(emojiResult);
     setState(() {});

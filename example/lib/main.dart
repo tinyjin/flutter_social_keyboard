@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
           SizedBox(
             height: 280,
             child: FlutterSocialKeyboard(
-              onEmojiSelected: (Category category, Emoji emoji) {
+              onEmojiSelected: (Category? category, Emoji emoji) {
                 // Do something when emoji is tapped (optional)
                 // print(emoji);
                 setState(() {
