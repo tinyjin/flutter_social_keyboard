@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
@@ -70,6 +71,7 @@ class _StickerDisplayState extends State<StickerDisplay> {
               mainAxisSpacing: widget.keyboardConfig.stickerVerticalSpacing,
             ),
             itemBuilder: (context, index) {
+              final assetUrl = widget.stickerModel.stickers[index].assetUrl;
               return GestureDetector(
                 onTap: () {
                   if (widget.keyboardConfig.showRecentsTab) {
@@ -93,12 +95,21 @@ class _StickerDisplayState extends State<StickerDisplay> {
                         widget.stickerModel.stickers[index]);
                   }
                 },
-                child: Image.asset(
-                  widget.stickerModel.stickers[index].assetUrl,
-                  errorBuilder: ((context, error, stackTrace) =>
-                      const Icon(Icons.error)),
-                  fit: BoxFit.cover,
-                ),
+                child: assetUrl.startsWith('https')
+                    ? CachedNetworkImage(
+                        imageUrl: assetUrl,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator.adaptive(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        assetUrl,
+                        errorBuilder: ((context, error, stackTrace) =>
+                            const Icon(Icons.error)),
+                        fit: BoxFit.cover,
+                      ),
               );
             },
           );

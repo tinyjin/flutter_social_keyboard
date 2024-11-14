@@ -92,6 +92,7 @@ class _FlutterSocialKeyboardState extends State<FlutterSocialKeyboard> {
         //Sticker
         StickerPickerWidget(
           keyboardConfig: widget.keyboardConfig,
+          stickers: widget.keyboardConfig.stickers,
           onStickerSelected: widget.onStickerSelected,
           scrollStream: scrollStream,
         ),

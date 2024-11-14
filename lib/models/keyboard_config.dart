@@ -1,5 +1,6 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_social_keyboard/models/category_sticker.dart';
 import 'package:flutter_social_keyboard/utils/languages.dart';
 
 /// KeyboardConfig for customizations
@@ -47,6 +48,7 @@ class KeyboardConfig {
     this.withSafeArea = true,
     this.showBackSpace = true,
     this.showSearchButton = true,
+    this.stickers = const [],
   });
 
   ///Enable Emoji keyboard
@@ -166,4 +168,7 @@ class KeyboardConfig {
 
   /// Replace latest emoji/gif/sticker on recents list on limit exceed
   final bool replaceRecentOnLimitExceed;
+
+  /// Initial stickers
+  final List<CategorySticker> stickers;
 }

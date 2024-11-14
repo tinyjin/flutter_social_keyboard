@@ -1,11 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_social_keyboard/models/category_sticker.dart';
 import 'package:flutter_social_keyboard/models/keyboard_config.dart';
 import 'package:flutter_social_keyboard/models/recent_sticker.dart';
 import 'package:flutter_social_keyboard/models/sticker.dart';
-import 'package:flutter_social_keyboard/models/category_sticker.dart';
 import 'package:flutter_social_keyboard/utils/sticker_picker_internal_utils.dart';
 import 'package:flutter_social_keyboard/widgets/display/sticker_display.dart';
 
@@ -15,11 +14,13 @@ class StickerPickerWidget extends StatefulWidget {
     required this.keyboardConfig,
     this.onStickerSelected,
     required this.scrollStream,
+    required this.stickers,
   }) : super(key: key);
 
   final Function(Sticker)? onStickerSelected;
   final KeyboardConfig keyboardConfig;
   final StreamController<String> scrollStream;
+  final List<CategorySticker> stickers;
 
   @override
   State<StickerPickerWidget> createState() => StickerPickerWidgetState();
@@ -30,7 +31,6 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
   final int initCategory = 0;
   final double tabBarHeight = 46;
 
-  List<String> _allStickers = [];
   PageController? _pageController;
   TabController? _tabController;
   final List<String> _tabs = List.empty(growable: true); //[''];
@@ -64,30 +64,26 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
   }
 
   Future _listAssets() async {
-    // Load as String
-    final manifestContent =
-        await DefaultAssetBundle.of(context).loadString('AssetManifest.json');
-
-    // Decode to Map
-    final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+    // Load from properties
 
     // Filter by path
-    _allStickers = manifestMap.keys
-        .where((path) => path.startsWith('assets/stickers/'))
-        .where(
-          (path) =>
-              (path.toLowerCase()).endsWith(".webp") ||
-              (path.toLowerCase()).endsWith(".png") ||
-              (path.toLowerCase()).endsWith(".jpg") ||
-              (path.toLowerCase()).endsWith(".gif") ||
-              (path.toLowerCase()).endsWith(".jpeg"),
-        )
-        .toList();
+    // TODO: Add properties and obtain the list
+    // _allStickers = manifestMap.keys
+    //     .where((path) => path.startsWith('assets/stickers/'))
+    //     .where(
+    //       (path) =>
+    //           (path.toLowerCase()).endsWith(".webp") ||
+    //           (path.toLowerCase()).endsWith(".png") ||
+    //           (path.toLowerCase()).endsWith(".jpg") ||
+    //           (path.toLowerCase()).endsWith(".gif") ||
+    //           (path.toLowerCase()).endsWith(".jpeg"),
+    //     )
+    //     .toList();
 
     //  Get folder names from categories and tab titles
     List<String> tabsTitle = [];
-    for (var i = 0; i < _allStickers.length; i++) {
-      String s = _allStickers[i].split("/")[2];
+    for (var i = 0; i < widget.stickers.length; i++) {
+      String s = widget.stickers[i].category;
       if (!tabsTitle.contains(s)) {
         tabsTitle.add(s);
       }
@@ -96,7 +92,9 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
     //Add titles to tab list and create tab controller
     _tabs.addAll(tabsTitle);
     _tabController = TabController(
-        initialIndex: initCategory, length: _tabs.length, vsync: this)
+        initialIndex: initCategory,
+        length: _tabs.length + (widget.keyboardConfig.showRecentsTab ? 1 : 0),
+        vsync: this)
       ..addListener(() => widget.scrollStream.add('showNav'));
 
     //Get stickers and group them based on tabs
@@ -116,7 +114,9 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
   // Initialize sticker data
   Future<void> _updateStickers() async {
     _categorySticker.clear();
-    for (var i = 0; i < _tabs.length; i++) {
+    final length =
+        _tabs.length + (widget.keyboardConfig.showRecentsTab ? 1 : 0);
+    for (var i = 0; i < length; i++) {
       if (i == 0 && widget.keyboardConfig.showRecentsTab) {
         List<Sticker> recents =
             (await StickerPickerInternalUtils().getRecentStickers())
@@ -127,13 +127,29 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
           stickers: recents,
         ));
       } else {
-        List<Sticker> stickers = _allStickers
-            .where((asset) => asset.contains("assets/stickers/${_tabs[i]}"))
-            .toList()
-            .map((e) => Sticker(assetUrl: e, category: _tabs[i]))
-            .toList();
+        final idx = i - (widget.keyboardConfig.showRecentsTab ? 1 : 0);
+        List<Sticker> stickers = [];
+        final categoryString = _tabs[idx];
+
+        for (var sticker in widget.stickers) {
+          if (sticker.category == categoryString) {
+            stickers.addAll(sticker.stickers);
+          }
+        }
+
+        bool isExist = false;
+        for (var categorySticker in _categorySticker) {
+          if (categorySticker.category == _tabs[idx]) {
+            categorySticker.stickers.addAll(stickers);
+            isExist = true;
+            break;
+          }
+        }
+
+        if (isExist) continue;
+
         _categorySticker.add(CategorySticker(
-          category: _tabs[i],
+          category: _tabs[idx],
           stickers: stickers,
         ));
       }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_keyboard/flutter_social_keyboard.dart';
+import 'package:flutter_social_keyboard/models/category_sticker.dart';
 
 void main() {
   runApp(
@@ -160,6 +161,21 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                 buttonMode: ButtonMode.CUPERTINO,
                 showBackSpace: true,
                 showSearchButton: true,
+                stickers: [
+                  CategorySticker(
+                    category: 'Test',
+                    stickers: [
+                      Sticker(
+                        assetUrl: 'https://firebasestorage.googleapis.com/v0/b/flower-diary-8faba.appspot.com/o/stickers%2Fbear%2Fstar_twinkle.png?alt=media&token=8145d903-686f-4186-ad4b-a41883e84d90',
+                        category: 'Test'
+                      ),
+                      Sticker(
+                        assetUrl: 'assets/stickers/mood/sticker_1.webp',
+                        category: 'Test'
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
