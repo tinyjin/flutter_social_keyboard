@@ -102,13 +102,13 @@ class _StickerDisplayState extends State<StickerDisplay> {
                             const CircularProgressIndicator.adaptive(),
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       )
                     : Image.asset(
                         assetUrl,
                         errorBuilder: ((context, error, stackTrace) =>
                             const Icon(Icons.error)),
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ),
               );
             },
