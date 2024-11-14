@@ -54,10 +54,10 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
   @override
   void initState() {
     super.initState();
-    _listAssets();
     if (widget.keyboardConfig.showRecentsTab) {
       _tabs.add('');
     }
+    _listAssets();
 
     _pageController = PageController(initialPage: initCategory)
       ..addListener((() => widget.scrollStream.add('showNav')));
@@ -65,20 +65,6 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
 
   Future _listAssets() async {
     // Load from properties
-
-    // Filter by path
-    // TODO: Add properties and obtain the list
-    // _allStickers = manifestMap.keys
-    //     .where((path) => path.startsWith('assets/stickers/'))
-    //     .where(
-    //       (path) =>
-    //           (path.toLowerCase()).endsWith(".webp") ||
-    //           (path.toLowerCase()).endsWith(".png") ||
-    //           (path.toLowerCase()).endsWith(".jpg") ||
-    //           (path.toLowerCase()).endsWith(".gif") ||
-    //           (path.toLowerCase()).endsWith(".jpeg"),
-    //     )
-    //     .toList();
 
     //  Get folder names from categories and tab titles
     List<String> tabsTitle = [];
@@ -114,9 +100,7 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
   // Initialize sticker data
   Future<void> _updateStickers() async {
     _categorySticker.clear();
-    final length =
-        _tabs.length + (widget.keyboardConfig.showRecentsTab ? 1 : 0);
-    for (var i = 0; i < length; i++) {
+    for (var i = 0; i < _tabs.length; i++) {
       if (i == 0 && widget.keyboardConfig.showRecentsTab) {
         List<Sticker> recents =
             (await StickerPickerInternalUtils().getRecentStickers())
@@ -127,9 +111,8 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
           stickers: recents,
         ));
       } else {
-        final idx = i - (widget.keyboardConfig.showRecentsTab ? 1 : 0);
         List<Sticker> stickers = [];
-        final categoryString = _tabs[idx];
+        final categoryString = _tabs[i];
 
         for (var sticker in widget.stickers) {
           if (sticker.category == categoryString) {
@@ -139,7 +122,7 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
 
         bool isExist = false;
         for (var categorySticker in _categorySticker) {
-          if (categorySticker.category == _tabs[idx]) {
+          if (categorySticker.category == _tabs[i]) {
             categorySticker.stickers.addAll(stickers);
             isExist = true;
             break;
@@ -149,7 +132,7 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
         if (isExist) continue;
 
         _categorySticker.add(CategorySticker(
-          category: _tabs[idx],
+          category: _tabs[i],
           stickers: stickers,
         ));
       }
