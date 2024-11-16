@@ -91,6 +91,7 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
           ? const Icon(Icons.access_time)
           : Text(
               title.toUpperCase(),
+              textAlign: TextAlign.center,
             ),
     );
   }
