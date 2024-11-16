@@ -78,9 +78,7 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
     //Add titles to tab list and create tab controller
     _tabs.addAll(tabsTitle);
     _tabController = TabController(
-        initialIndex: initCategory,
-        length: _tabs.length + (widget.keyboardConfig.showRecentsTab ? 1 : 0),
-        vsync: this)
+        initialIndex: initCategory, length: _tabs.length, vsync: this)
       ..addListener(() => widget.scrollStream.add('showNav'));
 
     //Get stickers and group them based on tabs
@@ -89,7 +87,7 @@ class StickerPickerWidgetState extends State<StickerPickerWidget>
 
   Widget _buildCategory(int index, String title) {
     return Tab(
-      child: index == 0
+      child: index == 0 && widget.keyboardConfig.showRecentsTab
           ? const Icon(Icons.access_time)
           : Text(
               title.toUpperCase(),
