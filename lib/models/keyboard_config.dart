@@ -48,6 +48,7 @@ class KeyboardConfig {
     this.withSafeArea = true,
     this.showBackSpace = true,
     this.showSearchButton = true,
+    this.showBottomNav = true,
     this.stickers = const [],
   });
 
@@ -168,6 +169,9 @@ class KeyboardConfig {
 
   /// Replace latest emoji/gif/sticker on recents list on limit exceed
   final bool replaceRecentOnLimitExceed;
+
+  // Show bottom navigator
+  final bool showBottomNav;
 
   /// Initial stickers
   final List<CategorySticker> stickers;

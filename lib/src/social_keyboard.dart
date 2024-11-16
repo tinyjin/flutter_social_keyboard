@@ -122,7 +122,7 @@ class _FlutterSocialKeyboardState extends State<FlutterSocialKeyboard> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      bottom: widget.keyboardConfig.withSafeArea && _showBottomNav,
+      bottom: widget.keyboardConfig.withSafeArea && _showBottomNav && widget.keyboardConfig.showBottomNav,
       top: widget.keyboardConfig.withSafeArea,
       left: widget.keyboardConfig.withSafeArea,
       right: widget.keyboardConfig.withSafeArea,
@@ -196,7 +196,7 @@ class _FlutterSocialKeyboardState extends State<FlutterSocialKeyboard> {
                 ),
                 //Bottom navigation
                 Visibility(
-                  visible: _showBottomNav,
+                  visible: _showBottomNav && widget.keyboardConfig.showBottomNav,
                   child: Container(
                     height: 50,
                     padding: EdgeInsets.zero,
